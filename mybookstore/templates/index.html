@@ -4,12 +4,6 @@
 {% block content %}
 
 
-<form action ="/search_bar/1/" method = "POST">
-    {% csrf_token %}
-    <label for="search_input">Your name: </label>
-    <input id="search_input" type="text" name="search_input">
-    <input type="submit" onclick="send_value()"  value="OK">
-</form>
 
   {% for list in ls %}
 <div class="card-group justify-content-center">
