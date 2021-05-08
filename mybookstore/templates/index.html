@@ -1,0 +1,25 @@
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+  {% for list in ls %}
+<div class="card-group justify-content-center">
+<div class="card justify-content-center">
+  <img class="card-img-top" style="width:200px;height:200px;" src={{list.image}} alt="Bologna">
+  <div class="card-body justify-content-center">
+    <h4 class="card-title">{{list.title}}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">{{list.subtitle}}</h6>
+    <p class="card-text">{{list.price}} </p>
+    <button type="button" class="btn btn-secondary">Read More</button>
+    <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="addToBookmark()">Add to Bookmark</button>
+  </div>
+</div>
+</div>
+  {% endfor %}
+
+
+{% endblock %}
+
