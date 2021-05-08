@@ -1,11 +1,10 @@
 
+
 {% extends "base_generic.html" %}
 
 {% block content %}
 
-
-
-  {% for list in ls %}
+{% for list in ls %}
 <div class="card-group justify-content-center">
 <div class="card justify-content-center">
   <img class="card-img-top" style="width:200px;height:200px;" src={{list.image}} alt="Bologna">
@@ -14,7 +13,7 @@
     <h6 class="card-subtitle mb-2 text-muted">{{list.subtitle}}</h6>
     <p class="card-text">{{list.price}} </p>
     <button type="button" class="btn btn-secondary">Read More</button>
-    <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="addToBookmark()">Add to Bookmark</button>
+    <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="deleteBookmark()">Delete Bookmark</button>
   </div>
 </div>
 </div>
@@ -23,14 +22,14 @@
 <nav >
   <ul class="pagination justify-content-center">
         {% if  current_page > 1 %}
-            <li class="page-item" >
-              <a class="page-link" href="/search/{{keyword}}/1" aria-label="Previous">
+            <li class="page-item">
+              <a class="page-link" href="/bookmarks/1" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="sr-only">First</span>
               </a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="/search/{{keyword}}/{{current_page|add:'-1'}}" aria-label="Previous">
+              <a class="page-link" href="/bookmarks/{{current_page|add:'-1'}}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="sr-only">Previous</span>
               </a>
@@ -40,25 +39,25 @@
             {% if  i|add:'-5' < current_page and i|add:'5' > current_page  %}
                 {% if i == current_page %}
                     <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="/search/{{keyword}}/{{i}}">{{i}}</a></li>
+                    <a class="page-link" href="/bookmarks/{{i}}">{{i}}</a></li>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="/search/{{keyword}}/{{i}}">{{i}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/bookmarks/{{i}}">{{i}}</a></li>
                 {% endif %}
             {% endif %}
         {% endfor %}
         {% if current_page < pg %}
             <li class="page-item">
         {% if current_page == 0 %}
-              <a class="page-link" href="/search/{{keyword}}/{{current_page|add:'2'}}" aria-label="Next">
+              <a class="page-link" href="/bookmarks/{{current_page|add:'2'}}" aria-label="Next">
                 {% else %}
-              <a class="page-link" href="/search/{{keyword}}/{{current_page|add:'1'}}" aria-label="Next">
+              <a class="page-link" href="/bookmarks/{{current_page|add:'1'}}" aria-label="Next">
         {% endif %}
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>
               </a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="/search/{{keyword}}/{{pg}}" aria-label="Next">
+              <a class="page-link" href="/bookmarks/{{pg}}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Last</span>
               </a>
@@ -68,71 +67,33 @@
 </nav>
 
 <script>
- function search_value(){
 
-     let search_input = document.getElementById('search_input').value;
-    console.log(search_input);
-    let cookie = document.cookie
-let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
-
-  $.ajax({
-  url: '/store_search/',
-  method : 'POST',
-         headers: {
-           'X-CSRFToken': csrfToken
-         },
-  data: {"search_input": search_input},
-  beforeSend: function() {
-   // things to do before submit
-  },
-  success: function(data) {
-
-
-   }
-   });
-    
-
-             // $.ajax({
-             // url: '/booklist_search/',
-             // method : 'POST',
-             // data: {search: $('#search_input').val()},
-             // beforeSend: function() {
-             //  // things to do before submit
-             // },
-             // success: function(response) {
-
-             //  alert(response)
-             //  }
-             //  });
-}
-
-function addToBookmark() {
+function deleteBookmark() {
     // console.log($(this).attr("id"));
-
-    let buttonId = event.srcElement.id;
-    console.log(buttonId);
+    buttonId = event.srcElement.id;
     let cookie = document.cookie
 let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
   $.ajax({
-  url: '/bookmarks/add_bookmark/',
+  url: '/bookmarks/delete_bookmark/',
   method : 'POST',
          headers: {
            'X-CSRFToken': csrfToken
          },
-  data: {"button_id": buttonId},
+      data: {"button_id": buttonId,"current":{{current_page}}},
   beforeSend: function() {
    // things to do before submit
   },
   success: function(data) {
-      console.log(data);
-
+location.reload(); 
 
    }
    });
     
 }
+  
+
+  
 </script>
 
 {% endblock %}
-

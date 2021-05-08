@@ -10,7 +10,7 @@
 <body>
   {% block sidebar %}<!-- insert default navigation text for every page -->
           <a class="page-link" href="{% url 'home' %}">Home</a>
-          <a class="page-link" href="{% url 'home' %}">Bookmarks</a>
+          <a class="page-link" href="{% url 'bookmarks' %}">Bookmarks</a>
 <form action ="/search_bar/1/" method = "POST">
     {% csrf_token %}
     <label for="search_input">Your name: </label>
