@@ -4,6 +4,12 @@
 {% block content %}
 
 
+<form action ="/search_bar/1/" method = "POST">
+    {% csrf_token %}
+    <label for="search_input">Your name: </label>
+    <input id="search_input" type="text" name="search_input">
+    <input type="submit" onclick="send_value()"  value="OK">
+</form>
 
   {% for list in ls %}
 <div class="card-group justify-content-center">
@@ -67,6 +73,44 @@
   </ul>
 </nav>
 
+<script>
+ function search_value(){
+
+     let search_input = document.getElementById('search_input').value;
+    console.log(search_input);
+    let cookie = document.cookie
+let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+  $.ajax({
+  url: '/store_search/',
+  method : 'POST',
+         headers: {
+           'X-CSRFToken': csrfToken
+         },
+  data: {"search_input": search_input},
+  beforeSend: function() {
+   // things to do before submit
+  },
+  success: function(data) {
+
+
+   }
+   });
+    
+
+             // $.ajax({
+             // url: '/booklist_search/',
+             // method : 'POST',
+             // data: {search: $('#search_input').val()},
+             // beforeSend: function() {
+             //  // things to do before submit
+             // },
+             // success: function(response) {
+
+             //  alert(response)
+             //  }
+             //  });
+}
 
 {% endblock %}
 

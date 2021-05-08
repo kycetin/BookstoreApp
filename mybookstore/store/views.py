@@ -32,9 +32,25 @@ def store_search(request,search):
     pag_size,range_list = create_range(total)
     return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"keyword":search,"range":range_list,"current_page":1 })
 
+def store_search_bar(request,search):
+    response = requests.get(f"https://api.itbook.store/1.0/search/{search}")
+    data = response.json()
+    total = int(data["total"])
+    pag_size,range_list = create_range(total)
+    return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"keyword":search,"range":range_list,"current_page":1 })
+
 def store_search_page(request,search,page):
     response = requests.get(f"https://api.itbook.store/1.0/search/{search}/{page}")
     data = response.json()
     total = int(data["total"])
     pag_size,range_list = create_range(total)
     return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"range":range_list,"keyword":search,"current_page":page })
+
+def store_search_bar(request,page):
+    if request.method == 'POST':
+        search = request.POST.get('search_input')
+        response = requests.get(f"https://api.itbook.store/1.0/search/{search}/1")
+        data = response.json()
+        total = int(data["total"])
+        pag_size,range_list = create_range(total)
+        return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"range":range_list,"keyword":search,"current_page":page})
