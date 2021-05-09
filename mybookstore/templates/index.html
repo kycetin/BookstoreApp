@@ -3,23 +3,42 @@
 
 {% block content %}
 
-
-
+<!-- <div class="row row-cols-1 row-cols-md-4 g-4"> -->
+<!--   {% for list in ls %} -->
+<!--   <div class="col"> -->
+<!--     <div class="card h-90"> -->
+<!--       <img -->
+<!--         src={{list.image}} -->
+<!--         class="card-img-top" -->
+<!--         alt="..." -->
+<!--       /> -->
+<!--       <div class="card-body"> -->
+<!--         <h5 class="card-title">{{list.title}}</h5> -->
+<!--         <\!-- <p class="card-text"> -\-> -->
+<!--         <\!--   {{list.authors}} -\-> -->
+<!--         <\!-- </p> -\-> -->
+<!--     <button type="button" class="btn btn-secondary">Read More</button> -->
+<!--     <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="addToBookmark()">Add to Bookmark</button> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!--   {% endfor %} -->
+<!-- </div> -->
+<div class="row row-cols-1 row-cols-md-4 g-4 ">
   {% for list in ls %}
-<div class="card-group justify-content-center">
-<div class="card justify-content-center">
-  <img class="card-img-top" style="width:200px;height:200px;" src={{list.image}} alt="Bologna">
-  <div class="card-body justify-content-center">
-    <h4 class="card-title">{{list.title}}</h4>
-    <h6 class="card-subtitle mb-2 text-muted">{{list.subtitle}}</h6>
-    <p class="card-text">{{list.price}} </p>
-    <button type="button" class="btn btn-secondary">Read More</button>
-    <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="addToBookmark()">Add to Bookmark</button>
+  <div class="col">
+  <div class="card"><img src={{list.image}}>
+    <div class="info">
+      <h4>{{list.title}}</h4>
+      <p>{{list.subtitle}}</p>
+      <p>{{list.price}}</p>
+      <button id="readMore{{list.isbn13}}" type="button" class="btn btn-dark" value="{{list.isbn13}}" onclick="readMore()">Read More</button>
+      <button id="bookmarked{{list.isbn13}}" type="button" class="btn btn-dark" value="{{list.isbn13}}" onclick="addToBookmark()">Add to Bookmark</button>
+    </div>
   </div>
-</div>
-</div>
+  </div>
   {% endfor %}
-
+</div>
 <nav >
   <ul class="pagination justify-content-center">
         {% if  current_page > 1 %}
@@ -68,6 +87,10 @@
 </nav>
 
 <script>
+function setback(button_id) {
+  $("#bookmarked"+button_id).text("Add to Bookmark");
+          $("#bookmarked"+button_id).css("background","#212529");
+}
  function search_value(){
 
      let search_input = document.getElementById('search_input').value;
@@ -105,11 +128,10 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
              //  }
              //  });
 }
-
 function addToBookmark() {
     // console.log($(this).attr("id"));
 
-    let buttonId = event.srcElement.id;
+    let buttonId = event.srcElement.value;
     console.log(buttonId);
     let cookie = document.cookie
 let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
@@ -126,12 +148,50 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
   },
   success: function(data) {
       console.log(data);
+      button_id = data.data
+      if (data.response == "added")
+      {
+          $("#bookmarked"+button_id).text("Added Successfuly");
+          $("#bookmarked"+button_id).css("background","green");
+          setTimeout("setback(button_id)", 1000);
+      }
+      else
+      {
+
+          $("#bookmarked"+button_id).text("Already Exist");
+          $("#bookmarked"+button_id).css("background","red");
+          setTimeout("setback(button_id)", 1000);
+      }
 
 
    }
    });
     
 }
+
+ function readMore(){
+
+     let search_input = document.getElementById('search_input').value;
+    console.log(search_input);
+    let cookie = document.cookie
+let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+
+  $.ajax({
+  url: '/read_more/',
+  method : 'POST',
+         headers: {
+           'X-CSRFToken': csrfToken
+         },
+  data: {"search_input": search_input},
+  beforeSend: function() {
+   // things to do before submit
+  },
+  success: function(data) {
+      console.log(data);
+
+
+   }
+   });
 </script>
 
 {% endblock %}
