@@ -3,9 +3,13 @@ from django.http import HttpResponse,JsonResponse
 from store.models import User
 
 import requests
+import requests_cache
 import json
 import math
 import pprint
+import datetime
+
+requests_cache.install_cache('bookstore_cache', backend='sqlite', expire_after=180)
 
 def create_range(total):
     range_list = []
@@ -144,6 +148,7 @@ def delete_bookmark(request):
     pag_size = math.ceil(total/10)
     data = []
     pag_size,range_list = create_range(total)
+    print("total",total)
     for i in range((page*10)-10,(page*10)):
         print(i)
         if i == total:

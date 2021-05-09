@@ -72,7 +72,7 @@
   outline: none;
   border: none;
   border-radius: 0px;
-  background: grey;
+  background: white;
   color: black;
   font-weight: bold;
   cursor: pointer;
@@ -82,4 +82,32 @@
 .card .info .btn:hover {
   background: black;
   color: white;
+}
+
+.row.row-cols-1.row-cols-md-4.g-4 {
+	--bs-gutter-x: 1.5rem;
+	--bs-gutter-y: 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: calc(var(--bs-gutter-x)/ -2);
+	margin-left: 50px;
+	margin-bottom:calc(var(--bs-gutter-y)/ -8);
+	margin-top: calc(var(--bs-gutter-y)/ -2);
+}
+
+.pagination{
+    margin-top:50px;
+}
+
+.btn{
+    border:0.5px solid grey;
+    background-color:transparent;
+}
+
+.exist{
+    background-color:red;
+}
+
+.added{
+    background-color:green;
 }
