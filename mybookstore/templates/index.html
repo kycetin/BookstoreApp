@@ -102,7 +102,7 @@
         {% endif %}
 <script>
 function setback(button_id) {
-    console.log("add to bookmarl");
+    console.log("add to bookmarl",button_id);
   $("#"+button_id).text("Add to Bookmark");
 }
  function search_value(){
@@ -232,7 +232,8 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
     </tr>
   </tbody>
 </table>
-      <button id="${books.isbn13}" type="button" class="btn btn-dark" value="${books.isbn13}" onclick="addToBookmark()">Add to Bookmark</button>
+      <button id="${books.isbn13}" type="button" class="btn btn-dark card-button" value="${books.isbn13}" onclick="addToBookmark()">Add to Bookmark</button>
+
     </div>
   </div>
 `);
@@ -242,6 +243,9 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
    });
  }
 
+  $("#info-modal").on("hidden.bs.modal", function () {
+      $( ".card-button" ).remove();
+});
 </script>
 
 {% endblock %}

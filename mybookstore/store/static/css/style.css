@@ -77,7 +77,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s ease;
-  font-size: revert;
+  font-size: small;
 }
 .card .info .btn:hover {
   background: black;
@@ -99,10 +99,6 @@
     margin-top:50px;
 }
 
-.btn{
-    border:0.5px solid grey;
-    background-color:transparent;
-}
 
 .exist{
     background-color:red;
