@@ -11,25 +11,27 @@
     </div>
   </div>
 </div>
+
 {% if ls %}
     <div class="row row-cols-1 row-cols-md-4 g-4 ">
       {% for list in ls %}
       <div id="book{{list.isbn13}}" class="col">
-      <div class="card"><img src={{list.image}}>
-        <div class="info">
-          <h4>{{list.title}}</h4>
-          <p>{{list.subtitle}}</p>
-          <p>{{list.price}}</p>
-          <button id="readMore{{list.isbn13}}" type="button" class="btn btn-dark" value="{{list.isbn13}}" onclick="readMoreBookmark()">Read More</button>
-          <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="deleteBookmark({{current_page}})">Delete Bookmark</button>
-        </div>
-      </div>
+          <div class="card"><img src={{list.image}}>
+            <div class="info">
+              <h4>{{list.title}}</h4>
+              <p>{{list.subtitle}}</p>
+              <p>{{list.price}}</p>
+              <button id="readMore{{list.isbn13}}" type="button" class="btn btn-dark" value="{{list.isbn13}}" onclick="readMoreBookmark()">Read More</button>
+              <button id="{{list.isbn13}}" type="button" class="btn btn-dark" onclick="deleteBookmark({{current_page}})">Delete Bookmark</button>
+            </div>
+          </div>
       </div>
       {% endfor %}
     </div>
 {% else %}
       <h4>Bookmark list empty</h4>
 {% endif %}
+
 <nav >
   <ul class="pagination justify-content-center">
         {% if  current_page > 1 %}
