@@ -1,15 +1,13 @@
 
 
 function setback(button_id) {
-    console.log("add to bookmarl",button_id);
   $("#"+button_id).text("Add to Bookmark");
 }
  function search_value(){
 
-     let search_input = document.getElementById('search_input').value;
-    console.log(search_input);
+    let search_input = document.getElementById('search_input').value;
     let cookie = document.cookie
-let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
   $.ajax({
   url: '/store_search/',
@@ -19,7 +17,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
          },
   data: {"search_input": search_input},
   beforeSend: function() {
-   // things to do before submit
   },
   success: function(data) {
 
@@ -29,12 +26,10 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
 }
 function addToBookmark() {
-    // console.log($(this).attr("id"));
 
     let buttonId = event.srcElement.value;
-    console.log(buttonId);
     let cookie = document.cookie
-let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
+    let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
   $.ajax({
   url: '/bookmarks/add_bookmark/',
@@ -44,14 +39,11 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
          },
   data: {"button_id": buttonId},
   beforeSend: function() {
-   // things to do before submit
   },
   success: function(data) {
-      console.log(data);
       button_id = data.data
       if (data.response == "added")
       {
-    console.log("added");
           $("#"+button_id).text("Added Successfuly");
           // $("#bookmarked"+button_id).css("background","green");
           setTimeout("setback(button_id)", 1000);
@@ -59,7 +51,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
       else
       {
 
-    console.log("exist");
           $("#"+button_id).text("Already Exist");
           setTimeout("setback(button_id)", 1000);
       }
@@ -74,7 +65,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
  function readMoreBooklist(){
 
     let buttonId = event.srcElement.value;
-    console.log(buttonId);
     let cookie = document.cookie
 let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
@@ -90,7 +80,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
   },
   success: function(data) {
       let books = data.data;
-      console.log(books.title);
       $('#info-modal .modal-body ').html(`
   <div class="card-modal"><img class="image-modal" src=${books.image}>
     <div class="info-modal">
@@ -147,7 +136,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 });
 
 function deleteBookmark() {
-    // console.log($(this).attr("id"));
     let buttonId = event.srcElement.id;
     let cookie = document.cookie
 let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
@@ -164,10 +152,9 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
    // things to do before submit
   },
   success: function(data) {
-      console.log(data.response);
  $('#book'+data.response).remove();
       $('#info-modal').modal('hide');
-// location.reload(); 
+location.reload(); 
    }
    });
     
@@ -178,7 +165,6 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
  function readMoreBookmark(){
 
     let buttonId = event.srcElement.value;
-    console.log(buttonId);
     let cookie = document.cookie
 let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
 
@@ -190,11 +176,9 @@ let csrfToken = cookie.substring(cookie.indexOf('=') + 1)
          },
   data: {"button_id": buttonId},
   beforeSend: function() {
-   // things to do before submit
   },
   success: function(data) {
       let books = data.data;
-      console.log(books.title);
       $('#info-modal .modal-body ').html(`
   <div class="card-modal"><img class="image-modal" src=${books.image}>
     <div class="info-modal">

@@ -77,7 +77,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s ease;
-  font-size: small;
+  font-size: revert;
 }
 .card .info .btn:hover {
   background: black;
