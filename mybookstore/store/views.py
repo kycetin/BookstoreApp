@@ -11,6 +11,7 @@ import datetime
 
 requests_cache.install_cache('bookstore_cache', backend='sqlite', expire_after=180)
 
+current_page = 0
 def create_range(total):
     range_list = []
     pag_size = math.ceil(total/10)
@@ -25,6 +26,8 @@ def create_range(total):
 
 def home(request):
     
+    global current_page
+    current_page = 1
     response = requests.get(f"https://api.itbook.store/1.0/new")
     data = response.json()
     total = int(data["total"])
@@ -33,6 +36,8 @@ def home(request):
 
 def store_search(request,search):
 
+    global current_page
+    current_page = 1
     response = requests.get(f"https://api.itbook.store/1.0/search/{search}")
     data = response.json()
     total = int(data["total"])
@@ -40,7 +45,8 @@ def store_search(request,search):
     return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"keyword":search,"range":range_list,"current_page":1 })
 
 def store_search_bar(request,search):
-
+    global current_page
+    current_page = 1
     response = requests.get(f"https://api.itbook.store/1.0/search/{search}")
     data = response.json()
     total = int(data["total"])
@@ -48,7 +54,8 @@ def store_search_bar(request,search):
     return render(request,'index.html',{"ls":data["books"],"pg":pag_size,"keyword":search,"range":range_list,"current_page":1 })
 
 def store_search_page(request,search,page):
-    
+    global current_page
+    current_page = page
     response = requests.get(f"https://api.itbook.store/1.0/search/{search}/{page}")
     data = response.json()
     total = int(data["total"])
@@ -57,6 +64,8 @@ def store_search_page(request,search,page):
 
 def store_search_bar(request,page):
     
+    global current_page
+    current_page = page
     if request.method == 'POST':
         search = request.POST.get('search_input')
         response = requests.get(f"https://api.itbook.store/1.0/search/{search}/1")
@@ -93,6 +102,8 @@ def add_bookmark(request):
 
 def bookmarks(request):
     
+    global current_page
+    current_page = 1
     user = User.objects.get(username="cetin")
     books = user.bookmarks
     total = int(user.bookmarks['total'])
@@ -107,7 +118,8 @@ def bookmarks(request):
     return render(request,'bookmark.html',{"ls":data,"pg":pag_size,"range":range_list,"keyword":user,"current_page":1})
 
 def bookmarks_page(request,page):
-    
+    global current_page
+    current_page = page
     user = User.objects.get(username="cetin")
     books = user.bookmarks
     total = int(user.bookmarks['total'])
@@ -124,7 +136,8 @@ def delete_bookmark(request):
     
     user = User.objects.get(username="cetin")
     button_id = request.POST['button_id']
-    page = int(request.POST['current'])
+    # page = int(request.POST['current'])
+    global current_page
     total = int(user.bookmarks['total'])
     user_books = user.bookmarks['books']
     if len(user_books) == 0:
@@ -156,4 +169,5 @@ def read_more(request):
     button_id = request.POST['button_id']
     response = requests.get(f"https://api.itbook.store/1.0/books/{button_id}")
     data = response.json()
-    return HttpResponse(json.dumps({"data":data}), content_type='application/json')
+    global current_page
+    return HttpResponse(json.dumps({"data":data,"current_page":current_page}), content_type='application/json')
